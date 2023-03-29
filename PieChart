@@ -1,0 +1,59 @@
+Table table;
+int[] angles = {  };
+double PercentCancelled;
+double PercentRunning;
+double PiesectorCancelled;
+double PiesectorRunning;
+
+void setup() {
+  table = loadTable("flights_full.csv", "header");
+  ArrayList<String> Cancelled = new ArrayList<String>();
+  for (TableRow row : table.rows()) {
+    String cancelled = row.getString("CANCELLED");
+    Cancelled.add(cancelled);
+  }
+
+  int countZeroes = 0;
+  int countOnes = 0;
+  for (String str : Cancelled) {
+    if (str.equals("0.00")) {
+      countZeroes++;
+    } else if (str.equals("1.00")) {
+      countOnes++;
+    }
+  }
+
+  int total = countZeroes + countOnes;
+  PercentCancelled = (countOnes*100)/(countZeroes + countOnes);
+  PercentRunning = (countZeroes*100)/(countZeroes + countOnes);
+  System.out.println("Number of 0.00: " + countZeroes);
+  System.out.println("Number of 1.00: " + countOnes);
+  System.out.println("Number of total " + total);
+  System.out.println("Cancelled percent = " + PercentCancelled);
+  System.out.println("Running percent = " + PercentRunning);
+  fullScreen();
+  noStroke();
+  noLoop();
+}
+
+void draw() {
+  background(100);
+  pieChart(300, PercentRunning, PercentCancelled);
+}
+void pieChart(float diameter, double PercentRunning, double PercentCancelled) {
+  float PiesectorRunning = (float) ((PercentRunning * 360)/100);
+  float PiesectorCancelled = (float) ((PercentCancelled * 360)/100);
+  
+  float lastAngle = 0;
+  
+  // Draw the first sector
+  fill(0, 0, 255);
+  arc(width/2, height/2, diameter, diameter, lastAngle, lastAngle + radians(PiesectorRunning));
+  lastAngle += radians(PiesectorRunning);
+  System.out.println(PiesectorRunning);
+  // Draw the second sector
+  fill(255, 0, 0);
+  arc(width/2, height/2, diameter, diameter, lastAngle, lastAngle + radians(PiesectorCancelled));
+  lastAngle += radians(PiesectorCancelled);
+  System.out.println(PiesectorCancelled);
+}
