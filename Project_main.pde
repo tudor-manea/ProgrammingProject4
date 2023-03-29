@@ -1,23 +1,36 @@
+import processing.data.*;
+import java.io.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Collections;
+final int EVENT_ORGDESTBACK=1;
+final int EVENT_ORGDESTFORWARD=2;
+final int EVENT_NULL=0;
 Table table;
+int OrgDestcount=0; 
+int OrgDestpagenum=1;
+
 PFont stdFont;
-Widget Origins, Dest;
+Widget OriginsHeader, DestHeader, OrgDestBack, OrgDestForward;
+String[] OriginArray; String[] OrgCityArray; String[] DestArray; String[] DestCityArray; 
 
 void setup() {
 
-  table = loadTable("flights_full.csv", "header");
-   
-  stdFont=loadFont("AdelleSansDevanagari-Light-30.vlw");
-textFont(stdFont);
+    table = loadTable("flights_full.csv", "header");
+     
+    stdFont=loadFont("AdelleSansDevanagari-Light-30.vlw");
+    textFont(stdFont);
 
-   
-
-    Dest=new Widget(270, 80, 190, 40, "Destinations", color(100), stdFont);
-
+    OriginsHeader  = new Widget(80, 80, 230, 40, "Origins", color(100), stdFont,0);
+    DestHeader     = new Widget(300, 80, 230, 40, "Destinations", color(100), stdFont,0);
+    
+    OrgDestBack    = new Widget(80, 660, 230, 40, "Back", color(100), stdFont, EVENT_ORGDESTBACK);
+    OrgDestForward = new Widget(300, 660, 230, 40, "Forward", color(100), stdFont, EVENT_ORGDESTFORWARD);
+    
+    
     size(800, 800);
-
-    rect(80,120,380,600);
-
- ArrayList<String> MKT_Carrier = new ArrayList<String>();
+   
+ArrayList<String> MKT_Carrier = new ArrayList<String>();
   for (TableRow row : table.rows()) {
     String mkt_carrier = row.getString("MKT_CARRIER");
     MKT_Carrier.add(mkt_carrier);
@@ -128,21 +141,59 @@ ArrayList<String> Distance = new ArrayList<String>();
     String distance = row.getString("DISTANCE");
     Distance.add(distance);
   }
-    
- 
- //for(String s : Origin)
- //   System.out.println(0+": "+s);
- 
- Object[] OriginArray = Origin.toArray();
- System.out.println(OriginArray[0]);
- 
-    
-  Origins=new Widget(80, 80, 190, 40, "Destination", color(100), stdFont);
   
-
+  OriginArray = new String[Origin.size()];
+  Origin.toArray(OriginArray);
+   
+  OrgCityArray = new String[Origin.size()];
+  OriginCity.toArray(OrgCityArray);
+  
+  DestArray = new String[Origin.size()];
+  Dest.toArray(DestArray);
+  
+  DestCityArray = new String[Origin.size()];
+  DestCity.toArray(DestCityArray);
+ 
 
 }
 void draw(){
-Origins.draw();
-Dest.draw();
+    background(255);
+    fill(255);
+    rect(80,120,450,540);
+
+  OriginsHeader.draw();
+  DestHeader.draw();
+  OrgDestBack.draw();
+  OrgDestForward.draw();
+  textFont(stdFont);
+  textSize(15);
+    pushStyle();
+   textSize(23);
+  text( "Page " +OrgDestpagenum+ ":       Flight origins and destinations." , 90, 145);
+  text("_____________________________________", 87, 149);
+  
+    popStyle();
+  for (int i = 0; i < 25; i++) {
+    text( OriginArray[OrgDestcount + i] + ",", 90, 170+i*20);
+    text( OrgCityArray[ OrgDestcount +i], 130, 170+i*20);
+    text( "---->", 283, 170+i*20);
+    text( DestArray[ OrgDestcount +i]+ ",", 320, 170+i*20);
+    text( DestCityArray[OrgDestcount + i], 360, 170+i*20);
+    
+  }
+}
+
+void mousePressed(){
+int event;
+event = OrgDestBack.getEvent(mouseX,mouseY);
+if(event== EVENT_ORGDESTBACK && OrgDestcount>24 && OrgDestpagenum>1 ){
+     OrgDestcount-=25;
+     OrgDestpagenum -=1;
+   }
+
+event = OrgDestForward.getEvent(mouseX,mouseY);
+if(event==EVENT_ORGDESTFORWARD){
+   OrgDestcount+=25;
+   OrgDestpagenum +=1;
+   }
 }
