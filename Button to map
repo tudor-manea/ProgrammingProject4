@@ -1,0 +1,104 @@
+int buttonX, buttonY; // Position of button
+int buttonSize = 100; // Diameter of button
+int currentScreen = 0;
+PShape usa;
+PShape[] states;
+String selectedState = "";
+boolean screenActive = false;
+
+void setup() {
+  fullScreen();
+  buttonX = width / 2;
+  buttonY = height / 2;
+  ellipseMode(CENTER);
+  usa = loadShape("us.svg");
+  states = usa.getChildren();
+}
+
+void draw() {
+  if (currentScreen == 0) {
+    drawButtonScreen();
+  } else if (currentScreen == 1) {
+    drawMapScreen();
+  }
+}
+
+void drawButtonScreen() {
+  background(0);
+  stroke(255);
+  fill(255);
+  textSize(64); 
+  text("Press to see map", 400, 400);
+  fill(0, 0, 255); // Set the fill color to blue
+  rectMode(CENTER);
+  rect(buttonX, buttonY, buttonSize, buttonSize/2); // Draw a blue rectangle
+  fill(255);
+  textSize(32);
+  textAlign(CENTER, CENTER);
+  text("Map", buttonX, buttonY); // Add the text "Map" to the button
+}
+
+void drawMapScreen() {
+  background(255);
+  textSize(32);
+  fill(255);
+  shape(usa);
+  if (screenActive) {
+    displayStateScreen(selectedState);
+  } else {
+    // Draw the back button
+    rectMode(CENTER);
+    noStroke();
+    fill(255, 0, 0);
+    rect(width/2, height - 50, 100, 50);
+    fill(255);
+    textSize(20);
+    textAlign(CENTER, CENTER);
+    text("Back", width/2, height - 50);
+  }
+}
+
+void displayStateScreen(String name) {
+  background(200, 100, 100);
+  textSize(48);
+  textAlign(CENTER, CENTER);
+  text(name, width/2, height/2);
+  rect(20, 20, 100, 50);
+  // Draw the back button
+  rectMode(CENTER);
+  noStroke();
+  fill(255, 0, 0);
+  rect(width/2, height - 50, 100, 50);
+  fill(255);
+  textSize(20);
+  textAlign(CENTER, CENTER);
+  text("Back", width/2, height - 50);
+}
+
+void mousePressed() {
+  if (currentScreen == 0 && overButton(buttonX, buttonY, buttonSize)) {
+    currentScreen = 1; // Go to the new screen
+  } else if (currentScreen == 1 && mouseX >= width/2 - 50 && mouseX <= width/2 + 50 && mouseY >= height - 75 && mouseY <= height - 25) {
+    currentScreen = 0; // Go back to the previous screen
+    selectedState = "";
+    screenActive = false;
+  } else if (currentScreen == 1) {
+    for (int i = 0; i < states.length; i++) {
+      if (states[i].contains(mouseX, mouseY)) {
+        selectedState = states[i].getName();
+        screenActive = true;
+        break;
+      }
+    }
+  }
+}
+
+boolean overButton(int x, int y, int diameter) {
+  float disX = x - mouseX;
+  float disY = y - mouseY;
+  if (sqrt(sq(disX) + sq(disY)) < diameter / 2) {
+    return true;
+  } else {
+    return false;
+  }
+}
