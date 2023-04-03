@@ -1,0 +1,63 @@
+int buttonSize = 200; // Diameter of button
+int currentScreen = 0;
+PShape usa;
+PShape[] states;
+String selectedState = "";
+
+void setup() {
+  fullScreen();
+  ellipseMode(CENTER);
+  usa = loadShape("us.svg");
+  states = usa.getChildren();
+}
+
+void draw() {
+  drawButtonScreen();
+}
+
+void drawButtonScreen() {
+  background(255); // set the background to black
+  stroke(255);
+  // Set the scale and translation to center and shrink the map
+  float scaleFactor = 1;
+  scale(scaleFactor);
+  translate(width/(2*scaleFactor) -550, height/(2*scaleFactor)-400);
+  
+  // Draw the USA map
+  shape(usa);
+  // Reset the scale and translation
+  resetMatrix();
+  
+  // Draw the 7 buttons
+  int xMargin = 100;
+  int yMargin = 100;
+  int xSpacing = 1000;
+  int ySpacing = (height - 2*yMargin - 2*buttonSize) / 3;
+  
+  drawButton(xMargin, yMargin, "Origin/Destination", color(255, 0, 0));
+  drawButton(xMargin + buttonSize + xSpacing, yMargin, "Distance Leaderboard", color(0, 255, 0));
+  drawButton(xMargin, yMargin + buttonSize + ySpacing, "Distances Bar Chart", color(255, 165, 0));
+  drawButton(xMargin + buttonSize + xSpacing, yMargin + buttonSize + ySpacing, "General ETA", color(255, 255, 0));
+  drawButton(xMargin, yMargin + 2*buttonSize + 2*ySpacing, "Cancelled Pie Chart", color(128, 0, 128));
+  drawButton(xMargin + buttonSize + xSpacing, yMargin + 2*buttonSize + 2*ySpacing, "Airline Pie Chart", color(0, 0, 255));
+  drawButton(width/2, height - 50, "Diverted", color(0, 128, 0));
+}
+
+
+void drawButton(int x, int y, String label, color buttonColor) {
+  fill(buttonColor);
+  rectMode(CENTER);
+  rect(x, y, buttonSize, buttonSize/2);
+  fill(255);
+  textSize(20);
+  textAlign(CENTER, CENTER);
+  text(label, x, y);
+}
+
+void mousePressed() {
+    for (int i = 0; i < states.length; i++) {
+      if (states[i].contains(mouseX, mouseY)) {
+        selectedState = states[i].getName();
+        break; }
+    }
+}
