@@ -1,0 +1,15 @@
+MapScreen mapScreen;
+
+void setup() {
+  size(1400, 760);
+  ellipseMode(CENTER);
+  mapScreen = new MapScreen();
+}
+
+void draw() {
+  mapScreen.draw();
+}
+
+void mousePressed() {
+  mapScreen.mousePressed();
+}
