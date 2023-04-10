@@ -24,10 +24,10 @@ class MapScreen {
     drawButton(xMargin, yMargin, "Origin/Destination", color(255, 0, 0));
     drawButton(xMargin + buttonSize + xSpacing, yMargin, "Distance Leaderboard", color(0, 255, 0));
     drawButton(xMargin, yMargin + buttonSize + ySpacing, "Distances Bar Chart", color(255, 165, 0));
-    drawButton(xMargin + buttonSize + xSpacing, yMargin + buttonSize + ySpacing, "General ETA", color(255, 255, 0));
+    drawButton(xMargin + buttonSize + xSpacing, yMargin + buttonSize + ySpacing, "General ETA", color(245, 230, 0));
     drawButton(xMargin, yMargin + 2 * buttonSize + 2 * ySpacing, "Cancelled Pie Chart", color(128, 0, 128));
     drawButton(xMargin + buttonSize + xSpacing, yMargin + 2 * buttonSize + 2 * ySpacing, "Airline Pie Chart", color(0, 0, 255));
-    drawButton(width / 2, height - 50, "Diverted", color(0, 128, 0));
+    drawButton(width / 2, height - 100, "Diverted Pie", color(0, 128, 0));
 
     // Display the name of the selected state at the top of the screen
     fill(0);
@@ -70,20 +70,26 @@ class MapScreen {
   } else if (dist(mouseX, mouseY, xMargin + buttonSize/2, yMargin + buttonSize + ySpacing + buttonSize/4) < buttonRadius) {
     // "Distances Bar Chart" button pressed
      DistancesBarChartActive = true;
+     MapScreenActive = false;
     System.out.println("Distances Bar Chart button pressed");
   } else if (dist(mouseX, mouseY, xMargin + buttonSize + xSpacing + buttonSize/2, yMargin + buttonSize + ySpacing + buttonSize/4) < buttonRadius) {
     // "General ETA" button pressed
     System.out.println("General ETA button pressed");
   } else if (dist(mouseX, mouseY, xMargin + buttonSize/2, yMargin + 2*buttonSize + 2*ySpacing + buttonSize/4) < buttonRadius) {
     // "Cancelled Pie Chart" button pressed
+    CancelledAirlinePie = true;
+    MapScreenActive = false;
     System.out.println("Cancelled Pie Chart button pressed");
   } else if (dist(mouseX, mouseY, xMargin + buttonSize + xSpacing + buttonSize/2, yMargin + 2*buttonSize + 2*ySpacing + buttonSize/4) < buttonRadius) {
     // "Airline Pie Chart" button pressed
     AirlinesPieChartAcitve =true;
+    MapScreenActive = false;
     System.out.println("Airline Pie Chart button pressed");
   } else if (dist(mouseX, mouseY, width/2, height - 50) < buttonRadius) {
     // "Diverted" button pressed
-    System.out.println("Diverted button pressed");
+    DivertedAirlinePie = true;
+    MapScreenActive = false;
+    System.out.println("Diverted Pie button pressed");
   }
  }
 }

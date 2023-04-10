@@ -59,6 +59,14 @@ class PieChart {
       fill(0);
       text(flights, fx - 20, fy);
       lastAngle = currentAngle;
+      
+      // Add a red "Back" button in the top left corner
+      fill(255, 0, 0);
+      rect(50, 50, 100, 50, 10);
+      fill(255);
+      textAlign(CENTER, CENTER);
+      textSize(20);
+      text("Back", 50, 45);
     }
   }
 
@@ -111,4 +119,16 @@ class PieChart {
   int getRandomColor() {
     return color(random(255), random(255), random(255));
   }
+  
+  void mousePressed(){
+  // Check if the Back button was clicked
+  if (mouseX >= 10 && mouseX <= 100 && mouseY >= 20 && mouseY <= 70) {
+    AirlinesPieChartAcitve = false; 
+    MapScreenActive = true;
+    println("back button pressed");
+  }
+}
+  
+  
+  
 }
