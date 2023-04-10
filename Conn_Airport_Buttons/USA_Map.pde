@@ -6,15 +6,9 @@ import java.util.ArrayList;
 
 class USAmap {
 
-  
-  PShape usa;
-  PShape[] states;
-  boolean StatescreenActive = false;
-  boolean AirportScreen = false;
-  boolean DefaultScreen = true; 
-  String selectedState = "";
+
   AirportsInStates airportsInStates;
-  ArrayList<Widget> airportWidgets;         ////////////////
+       ////////////////
 
   USAmap(AirportsInStates airports) {
     usa = loadShape("us.svg");
@@ -32,30 +26,42 @@ class USAmap {
     if (StatescreenActive) {
       displayStateScreen(selectedState);
     }
-    
-    if (AirportScreen){
-      displayAirportScreen();
+    if (AirportIN_OUT){
+      displayAirportIN_OUT();
+    }
+    if (State_IN_OUT){
+      displayState_IN_OUT();
     }
   }
   
     void displayDefaultScreen(){
     background(100);
     shape(usa);
+    
     }
-  void displayAirportScreen(){
+    
+  void displayAirportIN_OUT(){
     background(100);
     rect(20, 20, 100, 50);
-    //for (Widget TestWidget : airportWidgets) {
-    //  TestWidget.draw();                      ////////////////////
-    //HashSet<String> uniqueAirports = airportsInStates.getUniqueAirports(name);
-    //    for (String airport : uniqueAirports) {
-      
-    // println(airport);
-    //  }
+    
+       pushStyle();
+       Conn_AP_WIG.draw();
+       popStyle();
+  }
+  
+  void displayState_IN_OUT(){
+    background(100);
+    rect(20, 20, 100, 50);
+    
+       pushStyle();
+       Conn_State_WIG.draw();
+       popStyle();
   }
   
 
   void displayStateScreen(String name) {
+    //usa = null;
+    //states = null;
     background(200, 100, 100);
     textSize(48);
     textAlign(CENTER, CENTER);
@@ -66,23 +72,22 @@ class USAmap {
     text(title, width/4, height/3);
     HashSet<String> uniqueAirports = airportsInStates.getUniqueAirports(name);
       int i = 0;
-      int n = 850;
+      int n = 20;
       airportWidgets.clear(); /////////////////////////////////////////////
 
     for (String airport : uniqueAirports) {
-      
-      if(i==16){
-        i=0;
-        n+=100;
+        if(i==13){
+          i=0;
+          n+=125;
+        }
+        i++;
+        Widget TestWidget  = new Widget(n, (i*60)+20  , 100, 50, airport, color(100), stdFont, EVENT_BACK);
+        airportWidgets.add(TestWidget);/////////////////////////////////////////////
+        TestWidget.draw();
       }
-      
-      i++;
-      Widget TestWidget  = new Widget(n, -55 +i*60 , 85, 40, airport, color(100), stdFont, EVENT_BACK);
-      airportWidgets.add(TestWidget);/////////////////////////////////////////////
-      TestWidget.draw();
-  
-    }
     rect(20, 20, 100, 50);
+    StateSpecific_In_Out = new Widget(540, 660, 450, 45, selectedState+" Inbound/Outbound Flights.", color(100), stdFont, EVENT_SSIO);
+    StateSpecific_In_Out.draw();
   }
 
 
@@ -91,26 +96,44 @@ class USAmap {
       if (StatescreenActive) {
     if (mouseX > 20 && mouseX < 120 && mouseY > 20 && mouseY < 70) {
       StatescreenActive = false;
+      State_IN_OUT = false;
       DefaultScreen = true;
       }
-      
+
       for (Widget TestWidget : airportWidgets) {
             event = TestWidget.getEvent(mouseX,mouseY);
       if(event== EVENT_BACK ){
-           AirportScreen = true;
+           AirportIN_OUT = true;
            DefaultScreen = false;
+           StatescreenActive = false;
+            selectedAirport = TestWidget.label;
          }
       }
-      
+          event = StateSpecific_In_Out.getEvent(mouseX,mouseY);
+          if(event==EVENT_SSIO){
+             State_IN_OUT = true;
+             AirportIN_OUT = false;
+              DefaultScreen = false;
+              StatescreenActive = false;
+             }
     } 
-      if (AirportScreen) {
+   if (AirportIN_OUT) {
     if (mouseX > 20 && mouseX < 120 && mouseY > 20 && mouseY < 70) {
-        AirportScreen = false;
+        AirportIN_OUT = false;
         DefaultScreen = false;
         StatescreenActive = true;
       }
     }
-
+    
+    if(State_IN_OUT){
+      if (mouseX > 20 && mouseX < 120 && mouseY > 20 && mouseY < 70) {
+        println("xxxx");
+        StatescreenActive = true;
+        State_IN_OUT = false;
+        AirportIN_OUT = false;
+        DefaultScreen = false;
+      }
+    }
          
   else {
     for(int i = 0; i < states.length; i++) {
@@ -123,34 +146,3 @@ class USAmap {
     }
  }
 }
-
-
-//     int event;
-//    if (screenActive)  {
-//      if (mouseX > 20 && mouseX < 120 && mouseY > 20 && mouseY < 70) {
-//        screenActive = false;
-//      }
-//    //if (AirportScreen)  {
-//    //  if (mouseX > 20 && mouseX < 120 && mouseY > 20 && mouseY < 70) {
-//    //    AirportScreen = false;
-//    //    screenActive = true;
-//    //  }}
-   
-//   event = TestWidget.getEvent(mouseX,mouseY);
-//if(event== EVENT_BACK ){
-//     AirportScreen = true;
-//   }
-      
-  
-//    else {
-//      for (int i = 0; i < states.length; i++) {
-//        if (states[i].contains(mouseX, mouseY)) {
-//          selectedState = states[i].getName();
-//          screenActive = true;
-//          break;
-//        }
-//      }
-//    }
-//  }
-//  }
-//  }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 class AirportsInStates {
-  private Table table;
+ // private Table table;
 
   AirportsInStates(String csvFilename) {
     table = loadTable(csvFilename, "header");

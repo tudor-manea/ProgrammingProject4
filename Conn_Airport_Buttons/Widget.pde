@@ -18,7 +18,8 @@ fill(widgetColor);
 rect(x,y,width,height);
 fill(labelColor);
 textFont(widgetFont);
-text(label, x+GAP, y+height-30);
+text(label, x+GAP, y+height-34);
+
 }
 
 int getEvent(int mX, int mY){
