@@ -14,23 +14,44 @@ class DistancesBarChart {
 
   void countDistances() {
     table = loadTable("flights_full.csv", "header");
-   for (TableRow row : table.findRows(selectedState, "ORIGIN_STATE_ABR")) {
-      int distance = row.getInt("DISTANCE");
-      distances.add(distance);
-      if (distance >= 5000) {
-        distanceRanges[5]++;
-      } else if (distance >= 4000) {
-        distanceRanges[4]++;
-      } else if (distance >= 3000) {
-        distanceRanges[3]++;
-      } else if (distance >= 2000) {
-        distanceRanges[2]++;
-      } else if (distance >= 1000) {
-        distanceRanges[1]++;
-      } else {
-        distanceRanges[0]++;
-      }
-    }  
+     if (selectedState != ""){
+         for (TableRow row : table.findRows(selectedState, "ORIGIN_STATE_ABR")) {
+            int distance = row.getInt("DISTANCE");
+            distances.add(distance);
+            if (distance >= 5000) {
+              distanceRanges[5]++;
+            } else if (distance >= 4000) {
+              distanceRanges[4]++;
+            } else if (distance >= 3000) {
+              distanceRanges[3]++;
+            } else if (distance >= 2000) {
+              distanceRanges[2]++;
+            } else if (distance >= 1000) {
+              distanceRanges[1]++;
+            } else {
+              distanceRanges[0]++;
+            }
+          }
+     }
+     else if (selectedState == ""){
+       for (TableRow row : table.rows()) {
+            int distance = row.getInt("DISTANCE");
+            distances.add(distance);
+            if (distance >= 5000) {
+              distanceRanges[5]++;
+            } else if (distance >= 4000) {
+              distanceRanges[4]++;
+            } else if (distance >= 3000) {
+              distanceRanges[3]++;
+            } else if (distance >= 2000) {
+              distanceRanges[2]++;
+            } else if (distance >= 1000) {
+              distanceRanges[1]++;
+            } else {
+              distanceRanges[0]++;
+            }
+          }
+     }
   }
 
   void makeBars() {
