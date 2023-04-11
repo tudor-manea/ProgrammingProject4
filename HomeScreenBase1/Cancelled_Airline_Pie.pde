@@ -13,15 +13,25 @@ class CancelledPerAirlinePie {
 
     // Count cancelled flights per airline
     table = loadTable("flights_full.csv", "header");
-    for (TableRow row : table.rows()) {
+    
+    if (selectedState != ""){
+    for (TableRow row : table.findRows(selectedState, "ORIGIN_STATE_ABR")) {
       String airline = row.getString("MKT_CARRIER");
       int cancelled = row.getInt("CANCELLED");
       airlinesList.add(airline);
       cancelledList.add(cancelled);
-
       cancelledCounts.put(airline, cancelledCounts.getOrDefault(airline, 0) + cancelled);
     }
-
+  }
+else if (selectedState == ""){
+      for (TableRow row : table.rows()) {
+      String airline = row.getString("MKT_CARRIER");
+      int cancelled = row.getInt("CANCELLED");
+      airlinesList.add(airline);
+      cancelledList.add(cancelled);
+      cancelledCounts.put(airline, cancelledCounts.getOrDefault(airline, 0) + cancelled);
+    }
+  }
     // Store cancelled flights per airline in an array
     int airlinesSize = 0;
     for (int i = 0; i < airlineCodes.length; i++) {
@@ -99,7 +109,7 @@ class CancelledPerAirlinePie {
     textSize(30); // increase text size for title
     textAlign(CENTER);
     fill(0);
-    text("Cancelled Flights per Airline", width/2, 50); // add title
+    text("Cancelled Flights per Airline in "+stateName, width/2, 50); // add title
     textSize(20);
     textAlign(RIGHT, TOP);
     fill(0);
@@ -145,6 +155,7 @@ class CancelledPerAirlinePie {
   // Check if the Back button was clicked
   if (mouseX >= 10 && mouseX <= 100 && mouseY >= 20 && mouseY <= 70) {
     CancelledAirlinePie = false; 
+    StateScreenActive = false;
     MapScreenActive = true;
     println("back button pressed");
   }

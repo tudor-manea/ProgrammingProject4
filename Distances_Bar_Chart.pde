@@ -14,7 +14,7 @@ class DistancesBarChart {
 
   void countDistances() {
     table = loadTable("flights_full.csv", "header");
-    for (TableRow row : table.rows()) {
+   for (TableRow row : table.findRows(selectedState, "ORIGIN_STATE_ABR")) {
       int distance = row.getInt("DISTANCE");
       distances.add(distance);
       if (distance >= 5000) {
@@ -57,7 +57,7 @@ class DistancesBarChart {
   fill(0);
   textSize(32);
   textAlign(CENTER, CENTER);
-  text("Flight Distance Range in KM", width/2, 50);
+  text("Flight Distance Range in KM for flights to/from " +stateName, width/2, 50);
   textSize(16);
   textAlign(CENTER, TOP);
   text("Number of flights within range on bar", width/2, y + barHeight + 50);
@@ -106,6 +106,7 @@ class DistancesBarChart {
   // Check if the Back button was clicked
   if (mouseX >= width - 100 && mouseX <= width && mouseY >= 20 && mouseY <= 70) {
     DistancesBarChartActive = false;
+    StateScreenActive = false;
     MapScreenActive = true;
     println("back button pressed");
   }

@@ -10,12 +10,19 @@ class PieChart {
 
   void readAirlines() {
     table = loadTable("flights_full.csv", "header");
-    for (TableRow row : table.rows()) {
-      String airline = row.getString("MKT_CARRIER");
-      airlinesList.add(airline);
+    if (selectedState != ""){
+      for (TableRow row : table.findRows(selectedState, "ORIGIN_STATE_ABR")) {
+        String airline = row.getString("MKT_CARRIER");
+        airlinesList.add(airline);
+      }
+    }
+    else if (selectedState == "") {
+      for (TableRow row : table.rows()) {
+        String airline = row.getString("MKT_CARRIER");
+        airlinesList.add(airline);
+      }
     }
   }
-
   int[] chartAngles() {
     readAirlines();
     int totalFlights = airlinesList.size();
@@ -75,7 +82,7 @@ class PieChart {
     textSize(30); // increase text size for title
     textAlign(CENTER);
     fill(0);
-    text("Amount of Flights per Airline", width/2, 50); // add title
+    text("Amount of Flights per Airline for "+stateName, width/2, 50); // add title
     textSize(20);
     textAlign(RIGHT, TOP);
     fill(0);
@@ -124,6 +131,7 @@ class PieChart {
   // Check if the Back button was clicked
   if (mouseX >= 10 && mouseX <= 100 && mouseY >= 20 && mouseY <= 70) {
     AirlinesPieChartAcitve = false; 
+    StateScreenActive = false;
     MapScreenActive = true;
     println("back button pressed");
   }

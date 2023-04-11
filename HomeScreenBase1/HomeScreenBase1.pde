@@ -3,19 +3,22 @@ DistancesBarChart distancesBarChart;
 PieChart pieChart;
 CancelledPerAirlinePie pie;
 DivertedAirlinePie DivPie;
+StateScreen stateScreen;
 boolean MapScreenActive = true;
 boolean DistancesBarChartActive = false;
 boolean AirlinesPieChartAcitve = false;
 boolean CancelledAirlinePie = false; 
 boolean DivertedAirlinePie = false; 
+boolean StateScreenActive = false;
+String selectedState = "";
+String stateName = "USA"; 
 
 void setup() {
   size(1400, 840);
   ellipseMode(CENTER);
   mapScreen = new MapScreen();
   distancesBarChart = new DistancesBarChart();
-  pie = new CancelledPerAirlinePie();           // not sure if this line is required 
-  DivPie = new DivertedAirlinePie();
+  stateScreen = new StateScreen();
 }
 
 void draw() {
@@ -46,16 +49,21 @@ void draw() {
   if (DivertedAirlinePie){ 
     background(254, 251, 234);
     DivPie = new DivertedAirlinePie();
-    int[] angles = pie.chartAngles();
-    pie.drawChart(500, angles);
-    pie.drawLegend();
+    int[] angles = DivPie.chartAngles();
+    DivPie.drawChart(500, angles);
+    DivPie.drawLegend();
   }
-  
+  if (StateScreenActive){
+    stateScreen.draw();
+  }
 }
 
 void mousePressed() {
    if (MapScreenActive){
     mapScreen.mousePressed();
+   }
+   else if(StateScreenActive){
+    stateScreen.mousePressed();
    }
    else if (DistancesBarChartActive){
      distancesBarChart.mousePressed();

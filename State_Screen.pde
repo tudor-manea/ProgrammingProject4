@@ -1,71 +1,18 @@
-class MapScreen {
-  PShape usa;
-  PShape[] states;
-  
+class StateScreen {
+
+  PShape usa2;
+  PShape michigan;
+  PShape ohio;
+  PShape state;
   int buttonSize = 200; // Diameter of button
 
-  MapScreen() {
-    usa = loadShape("us.svg");
-    states = usa.getChildren();
-  }
-
-  void draw() {
-    background(66, 224, 245); // set the background to light blue
-    //background(0);
-    stroke(255);
-
-    // Draw the USA map
-     usa.disableStyle();
-    // Set our own coloring
-    fill(255);
-    noStroke();
-    shape(usa, 150, 100); //move the map to a different position
-
-    // Draw the 7 buttons
-    int xMargin = 100;
-    int yMargin = 100;
-    int xSpacing = 1000;
-    int ySpacing = (height - 2 * yMargin - 2 * buttonSize) / 3;
-    drawButton(xMargin, yMargin, "Origin/Destination", color(255, 0, 0));
-    drawButton(xMargin + buttonSize + xSpacing, yMargin, "Distance Leaderboard", color(0, 255, 0));
-    drawButton(xMargin, yMargin + buttonSize + ySpacing, "Distances Bar Chart", color(255, 165, 0));
-    drawButton(xMargin + buttonSize + xSpacing, yMargin + buttonSize + ySpacing, "General ETA", color(245, 230, 0));
-    drawButton(xMargin, yMargin + 2 * buttonSize + 2 * ySpacing, "Cancelled Pie Chart", color(128, 0, 128));
-    drawButton(xMargin + buttonSize + xSpacing, yMargin + 2 * buttonSize + 2 * ySpacing, "Airline Pie Chart", color(0, 0, 255));
-    drawButton(width / 2, height - 100, "Diverted Pie", color(0, 128, 0));
-
-    // Display the name of the selected state at the top of the screen
-    
-    if (stateName == "USA"){
-    fill(0);
-    textSize(40);
-    textAlign(CENTER);
-    text("Select state or don't to keep date for all USA states", width / 2, 50);
-    }
-    if (stateName != "USA"){
-    fill(0);
-    textSize(40);
-    textAlign(CENTER);
-    text(stateName, width / 2, 50);
-    }
-  }
-
-  void drawButton(int x, int y, String label, color buttonColor) {
-    fill(buttonColor);
-    rectMode(CENTER);
-    rect(x, y, buttonSize, buttonSize / 2);
-    fill(255);
-    textSize(20);
-    textAlign(CENTER, CENTER);
-    text(label, x, y);
-  }
-
-  void mousePressed() {
-  for (int i = 0; i < states.length; i++) {
-    if (states[i].contains(mouseX - 150, mouseY - 100)) { // check if the mouse is inside the state shape
-      selectedState = states[i].getName();
-      //System.out.println(selectedState);
-      switch(selectedState) {
+  StateScreen() {
+  usa2 = loadShape("usa-wikipedia.svg");
+  michigan = usa2.getChild("MI");
+  ohio = usa2.getChild("OH");
+  state = usa2.getChild(selectedState);
+  
+  switch(selectedState) {
     case "AL":
       stateName = "Alabama";
       break;
@@ -214,12 +161,59 @@ class MapScreen {
       stateName = "Wyoming";
       break;
    }
+  }
+
+  void draw() {
+    background(0,255,230); // set the background to light blue
+    stroke(255);
+    // Draw the 7 buttons
+    int xMargin = 100;
+    int yMargin = 100;
+    int xSpacing = 1000;
+    int ySpacing = (height - 2 * yMargin - 2 * buttonSize) / 3;
+    drawButton(xMargin, yMargin, "Origin/Destination", color(255, 0, 0));
+    drawButton(xMargin + buttonSize + xSpacing, yMargin, "Distance Leaderboard", color(0, 255, 0));
+    drawButton(xMargin, yMargin + buttonSize + ySpacing, "Distances Bar Chart", color(255, 165, 0));
+    drawButton(xMargin + buttonSize + xSpacing, yMargin + buttonSize + ySpacing, "General ETA", color(245, 230, 0));
+    drawButton(xMargin, yMargin + 2 * buttonSize + 2 * ySpacing, "Cancelled Pie Chart", color(128, 0, 128));
+    drawButton(xMargin + buttonSize + xSpacing, yMargin + 2 * buttonSize + 2 * ySpacing, "Airline Pie Chart", color(0, 0, 255));
+    drawButton(width / 2, height - 100, "Diverted Pie", color(0, 128, 0));
+    // Display the name of the selected state at the top of the screen
+    if (stateName != "USA"){
+    fill(0);
+    textSize(40);
+    textAlign(CENTER);
+    text(stateName, width / 2, 50);
+    
+    
+    //display map 
+   
+    //shape(usa, -50, -100);             Don't want to display map just state 
+    
+    // Disable the colors found in the SVG file
+    usa2.disableStyle();
+    // Set our own coloring
+    fill(0, 51, 102);
+    noStroke();
+    // Draw a single state
+    shape(michigan, CENTER-260, CENTER); // draws michigan 
+    
+    
+      
     }
   }
-  if (selectedState != ""){
-    StateScreenActive =true;
-    MapScreenActive = false;
+
+  void drawButton(int x, int y, String label, color buttonColor) {
+    fill(buttonColor);
+    rectMode(CENTER);
+    rect(x, y, buttonSize, buttonSize / 2);
+    fill(255);
+    textSize(20);
+    textAlign(CENTER, CENTER);
+    text(label, x, y);
   }
+
+  void mousePressed() {
   
   int xMargin = 100;
   int yMargin = 100;
@@ -237,7 +231,7 @@ class MapScreen {
   } else if (dist(mouseX, mouseY, xMargin + buttonSize/2, yMargin + buttonSize + ySpacing + buttonSize/4) < buttonRadius) {
     // "Distances Bar Chart" button pressed
      DistancesBarChartActive = true;
-     MapScreenActive = false;
+     StateScreenActive = false;
     System.out.println("Distances Bar Chart button pressed");
   } else if (dist(mouseX, mouseY, xMargin + buttonSize + xSpacing + buttonSize/2, yMargin + buttonSize + ySpacing + buttonSize/4) < buttonRadius) {
     // "General ETA" button pressed
@@ -245,17 +239,17 @@ class MapScreen {
   } else if (dist(mouseX, mouseY, xMargin + buttonSize/2, yMargin + 2*buttonSize + 2*ySpacing + buttonSize/4) < buttonRadius) {
     // "Cancelled Pie Chart" button pressed
     CancelledAirlinePie = true;
-    MapScreenActive = false;
+    StateScreenActive = false;
     System.out.println("Cancelled Pie Chart button pressed");
   } else if (dist(mouseX, mouseY, xMargin + buttonSize + xSpacing + buttonSize/2, yMargin + 2*buttonSize + 2*ySpacing + buttonSize/4) < buttonRadius) {
     // "Airline Pie Chart" button pressed
     AirlinesPieChartAcitve =true;
-    MapScreenActive = false;
+    StateScreenActive = false;
     System.out.println("Airline Pie Chart button pressed");
   } else if (dist(mouseX, mouseY, width/2, height - 50) < buttonRadius) {
     // "Diverted" button pressed
     DivertedAirlinePie = true;
-    MapScreenActive = false;
+    StateScreenActive = false;
     System.out.println("Diverted Pie button pressed");
   }
  }
