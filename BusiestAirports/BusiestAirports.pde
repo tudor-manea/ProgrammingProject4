@@ -1,0 +1,88 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+class BusiestAirport {
+  Table table;
+  ArrayList<String> airportList = new ArrayList<>();
+  HashMap<String, Integer> airportCountMap = new HashMap<>();
+
+  void readAirports() {
+    table = loadTable("flights_full.csv", "header");
+    for (TableRow row : table.rows()) {
+      String origin = row.getString("ORIGIN");
+      String dest = row.getString("DEST");
+      airportList.add(origin);
+      airportList.add(dest);
+    }
+
+    String[] airportArray = new String[airportList.size()];
+    airportList.toArray(airportArray);
+
+    countAirports(airportArray);
+    printAirportCounts();
+    makeLeaderboard();
+  }
+
+  void countAirports(String[] airportArray) {
+    for (String airport : airportArray) {
+      if (airportCountMap.containsKey(airport)) {
+        int count = airportCountMap.get(airport);
+        airportCountMap.put(airport, count + 1);
+      } else {
+        airportCountMap.put(airport, 1);
+      }
+    }
+  }
+
+  void printAirportCounts() {
+    // Sort the HashMap by value in descending order
+    airportCountMap.entrySet().stream()
+      .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+      .forEach(entry -> System.out.println("Airport: " + entry.getKey() + ", Count: " + entry.getValue()));
+  }
+
+  void makeLeaderboard() {
+    // Set up the leaderboard rectangle
+    int rectWidth = width;
+    int rectHeight = height;
+    int rectX = 0;
+    int rectY = 0;
+    fill(255);
+    rect(rectX, rectY, rectWidth, rectHeight);
+    fill(255, 253, 208); // Cream background color
+
+    // Set up the title text
+    textAlign(CENTER, TOP);
+    textSize(36);
+    fill(0);
+    text("Busiest Airports", rectX + rectWidth / 2, rectY + 20);
+
+    // Sort the airport count map by value in descending order
+    ArrayList<Map.Entry<String, Integer>> sortedEntries = new ArrayList<>(airportCountMap.entrySet());
+    sortedEntries.sort(Map.Entry.<String, Integer>comparingByValue().reversed());
+
+    // Display the top 10 airports in the leaderboard
+    textAlign(CENTER, TOP);
+    textSize(24);
+    int numAirports = Math.min(sortedEntries.size(), 10); // Get the smaller of 10 and the size of the sorted entries
+    int listHeight = numAirports * 50; // Height of the list
+    int listY = rectY + rectHeight / 2 - listHeight / 2; // Y-coordinate of the top of the list
+    rect(rectX + rectWidth / 4, listY, rectWidth / 2, listHeight); // Rectangle around the list
+    for (int i = 0; i < numAirports; i++) {
+      Map.Entry<String, Integer> entry = sortedEntries.get(i);
+      String airport = entry.getKey();
+      int count = entry.getValue();
+      float textY = listY + 30 + i * 50; // Compute the y-coordinate for the text
+      text((i + 1) + ". " + airport + " - " + count + " flights", rectX + rectWidth / 2, textY);
+    }
+  }
+}
+
+BusiestAirport busiest;
+
+void setup() {
+  size(1000, 1000); // Use displayWidth and displayHeight to fill the screen
+  busiest = new BusiestAirport();
+  busiest.readAirports();
+}
