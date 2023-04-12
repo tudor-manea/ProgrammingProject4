@@ -68,7 +68,7 @@ class StateScreen {
     int yMargin = 100;
     int xSpacing = 1000;
     int ySpacing = (height - 2 * yMargin - 2 * buttonSize) / 3;
-    drawButton(xMargin, yMargin, "Origin/Destination", color(255, 0, 0));
+    drawButton(xMargin, yMargin, "Busiest Airport", color(255, 0, 0));
     drawButton(xMargin + buttonSize + xSpacing, yMargin, "Distance Leaderboard", color(0, 255, 0));
     drawButton(xMargin, yMargin + buttonSize + ySpacing, "Distances Bar Chart", color(255, 165, 0));
     drawButton(xMargin + buttonSize + xSpacing, yMargin + buttonSize + ySpacing, "General ETA", color(245, 230, 0));
@@ -89,20 +89,23 @@ class StateScreen {
     textSize(20);
     text("Back", width/2 -300,40);
     
-    
-    //display map 
-   
-    //shape(usa, -50, -100);             Don't want to display map just state 
-    
-    // Disable the colors found in the SVG file
+    //Add black rectangle around map 
+    fill(0);
+    rect(width/2 +270 , height-150, 300, 250);
+    //scale map
+    float scaleFactor = 0.3; // Adjust as needed
+    // Draw the map and state
+    push();
+    scale(scaleFactor);
+    translate(2500, 1800);
+    state = usa2.getChild(selectedState);
+    fill(255);
+    shape(usa2, 0, 0);
     usa2.disableStyle();
-    // Set our own coloring
     fill(0, 51, 102);
     noStroke();
-    // Draw a single state
-    state = usa2.getChild(""+selectedState);
-    // Draw the state at the calculated position
-    shape(state);
+    shape(state, 0, 0);
+    pop();
     }
   }
 
@@ -134,7 +137,7 @@ class StateScreen {
   if (dist(mouseX, mouseY, xMargin + buttonSize/2, yMargin + buttonSize/4) < buttonRadius) {
     // "Busiest Airport" button pressed
     BusiestAirportScreen = true;
-    MapScreenActive = false;
+    StateScreenActive = false;
     System.out.println("Busiest Airport button pressed");
   } else if (dist(mouseX, mouseY, xMargin + buttonSize + xSpacing + buttonSize/2, yMargin + buttonSize/4) < buttonRadius) {
     // "Distance Leaderboard" button pressed
@@ -142,7 +145,7 @@ class StateScreen {
   } else if (dist(mouseX, mouseY, xMargin + buttonSize/2, yMargin + buttonSize + ySpacing + buttonSize/4) < buttonRadius) {
     // "Distances Bar Chart" button pressed
      DistancesBarChartActive = true;
-     MapScreenActive = false;
+     StateScreenActive = false;
     System.out.println("Distances Bar Chart button pressed");
   } else if (dist(mouseX, mouseY, xMargin + buttonSize + xSpacing + buttonSize/2, yMargin + buttonSize + ySpacing + buttonSize/4) < buttonRadius) {
     // "General ETA" button pressed
@@ -150,17 +153,17 @@ class StateScreen {
   } else if (dist(mouseX, mouseY, xMargin + buttonSize/2, yMargin + 2*buttonSize + 2*ySpacing + buttonSize/4) < buttonRadius) {
     // "Cancelled Pie Chart" button pressed
     CancelledAirlinePie = true;
-    MapScreenActive = false;
+    StateScreenActive = false;
     System.out.println("Cancelled Pie Chart button pressed");
   } else if (dist(mouseX, mouseY, xMargin + buttonSize + xSpacing + buttonSize/2, yMargin + 2*buttonSize + 2*ySpacing + buttonSize/4) < buttonRadius) {
     // "Airline Pie Chart" button pressed
     AirlinesPieChartAcitve =true;
-    MapScreenActive = false;
+    StateScreenActive = false;
     System.out.println("Airline Pie Chart button pressed");
   } else if (dist(mouseX, mouseY, width/2, height - 50) < buttonRadius) {
     // "Diverted" button pressed
     DivertedAirlinePie = true;
-    MapScreenActive = false;
+    StateScreenActive = false;
     System.out.println("Diverted Pie button pressed");
   }
  }
