@@ -58,7 +58,7 @@ else if (selectedState == ""){
       totalCancelled += cancelled;
     }
     float angleSum = 0;
-    for (int i = 0; i < airlines.length; i++) {
+    for (int i = 0; i < airlines.length && i < angles.length; i++) {
       float angle = 360 * ((float)airlines[i] / totalCancelled);
       angles[i] = (int)Math.floor(angle);
       angleSum += angle - angles[i];

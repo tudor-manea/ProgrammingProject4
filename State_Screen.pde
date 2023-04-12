@@ -1,166 +1,63 @@
 class StateScreen {
 
   PShape usa2;
-  PShape michigan;
-  PShape ohio;
   PShape state;
+  PShape alabama;
+  PShape alaska;
+  PShape arizona;
+  PShape arkansas;
+  PShape california;
+  PShape colorado;
+  PShape connecticut;
+  PShape delaware;
+  PShape florida;
+  PShape georgia;
+  PShape hawaii;
+  PShape idaho;
+  PShape illinois;
+  PShape indiana;
+  PShape iowa;
+  PShape kansas;
+  PShape kentucky;
+  PShape louisiana;
+  PShape maine;
+  PShape maryland;
+  PShape massachusetts;
+  PShape michigan;
+  PShape minnesota;
+  PShape mississippi;
+  PShape missouri;
+  PShape montana;
+  PShape nebraska;
+  PShape nevada;
+  PShape newhampshire;
+  PShape newjersey;
+  PShape newmexico;
+  PShape newyork;
+  PShape northcarolina;
+  PShape northdakota;
+  PShape ohio;
+  PShape oklahoma;
+  PShape oregon;
+  PShape pennsylvania;
+  PShape rhodeisland;
+  PShape southcarolina;
+  PShape southdakota;
+  PShape tennessee;
+  PShape texas;
+  PShape utah;
+  PShape vermont;
+  PShape virginia;
+  PShape washington;
+  PShape westvirginia;
+  PShape wisconsin;
+  PShape wyoming;
+
+  
   int buttonSize = 200; // Diameter of button
 
   StateScreen() {
   usa2 = loadShape("usa-wikipedia.svg");
-  michigan = usa2.getChild("MI");
-  ohio = usa2.getChild("OH");
-  state = usa2.getChild(selectedState);
-  
-  switch(selectedState) {
-    case "AL":
-      stateName = "Alabama";
-      break;
-    case "AK":
-      stateName = "Alaska";
-      break;
-    case "AZ":
-      stateName = "Arizona";
-      break;
-    case "AR":
-      stateName = "Arkansas";
-      break;
-    case "CA":
-      stateName = "California";
-      break;
-    case "CO":
-      stateName = "Colorado";
-      break;
-    case "CT":
-      stateName = "Connecticut";
-      break;
-    case "DE":
-      stateName = "Delaware";
-      break;
-    case "FL":
-      stateName = "Florida";
-      break;
-    case "GA":
-      stateName = "Georgia";
-      break;
-    case "HI":
-      stateName = "Hawaii";
-      break;
-    case "ID":
-      stateName = "Idaho";
-      break;
-    case "IL":
-      stateName = "Illinois";
-      break;
-    case "IN":
-      stateName = "Indiana";
-      break;
-    case "IA":
-      stateName = "Iowa";
-      break;
-    case "KS":
-      stateName = "Kansas";
-      break;
-    case "KY":
-      stateName = "Kentucky";
-      break;
-    case "LA":
-      stateName = "Louisiana";
-      break;
-    case "ME":
-      stateName = "Maine";
-      break;
-    case "MD":
-      stateName = "Maryland";
-      break;
-    case "MA":
-      stateName = "Massachusetts";
-      break;
-    case "MI":
-      stateName = "Michigan";
-      break;
-    case "MN":
-      stateName = "Minnesota";
-      break;
-    case "MS":
-      stateName = "Mississippi";
-      break;
-    case "MO":
-      stateName = "Missouri";
-      break;
-    case "MT":
-      stateName = "Montana";
-      break;
-    case "NE":
-      stateName = "Nebraska";
-      break;
-    case "NV":
-      stateName = "Nevada";
-      break;
-    case "NH":
-      stateName = "New Hampshire";
-      break;
-    case "NJ":
-      stateName = "New Jersey";
-      break;
-    case "NM":
-      stateName = "New Mexico";
-      break;
-    case "NY":
-      stateName = "New York";
-      break;
-    case "NC":
-      stateName = "North Carolina";
-      break;
-    case "ND":
-      stateName = "North Dakota";
-      break;
-    case "OH":
-      stateName = "Ohio";
-      break;
-    case "OK":
-      stateName = "Oklahoma";
-      break;
-    case "OR":
-      stateName = "Oregon";
-      break;
-    case "PA":
-      stateName = "Pennsylvania";
-      break;
-    case "RI":
-      stateName = "Rhode Island";
-      break;
-    case "SC":
-      stateName = "South Carolina";
-      break;
-    case "SD":
-      stateName = "South Dakota";
-      break;
-    case "TN":
-      stateName = "Tennessee";
-      break;
-    case "TX":
-      stateName = "Texas";
-      break;
-    case "UT":
-      stateName = "Utah";
-      break;
-    case "VT":
-      stateName = "Vermont";
-      break;
-    case "VA":
-      stateName = "Virginia";
-      break;
-    case "WA":
-      stateName = "Washington";
-      break;
-    case "WI":
-      stateName = "Wisconsin";
-      break;
-    case "WY":
-      stateName = "Wyoming";
-      break;
-   }
   }
 
   void draw() {
@@ -184,6 +81,13 @@ class StateScreen {
     textSize(40);
     textAlign(CENTER);
     text(stateName, width / 2, 50);
+    // Add a red "Back" button in the top right corner
+    fill(255, 0, 0);
+    rect(width/2 -300 , 40, 100, 50, 10);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textSize(20);
+    text("Back", width/2 -300,40);
     
     
     //display map 
@@ -196,10 +100,9 @@ class StateScreen {
     fill(0, 51, 102);
     noStroke();
     // Draw a single state
-    shape(michigan, CENTER-260, CENTER); // draws michigan 
-    
-    
-      
+    state = usa2.getChild(""+selectedState);
+    // Draw the state at the calculated position
+    shape(state);
     }
   }
 
@@ -215,23 +118,31 @@ class StateScreen {
 
   void mousePressed() {
   
+   // Check if the Back button was clicked
+  if (mouseX >= width/2 - 400 && mouseX <= width/2 -200 && mouseY >= 40 && mouseY <= 80) {
+    StateScreenActive = false;
+    MapScreenActive = true;
+    println("back button pressed");
+  }
   int xMargin = 100;
   int yMargin = 100;
   int xSpacing = 1000;
   int ySpacing = (height - 2 * yMargin - 2 * buttonSize) / 3;
-
+  
    // Check if the mouse is within a certain radius of each button center
   int buttonRadius = buttonSize / 2 + 20; // increase the radius by 20 pixels
   if (dist(mouseX, mouseY, xMargin + buttonSize/2, yMargin + buttonSize/4) < buttonRadius) {
-    // "Origin/Destination" button pressed
-    System.out.println("Origin/Destination button pressed");
+    // "Busiest Airport" button pressed
+    BusiestAirportScreen = true;
+    MapScreenActive = false;
+    System.out.println("Busiest Airport button pressed");
   } else if (dist(mouseX, mouseY, xMargin + buttonSize + xSpacing + buttonSize/2, yMargin + buttonSize/4) < buttonRadius) {
     // "Distance Leaderboard" button pressed
     System.out.println("Distance Leaderboard button pressed");
   } else if (dist(mouseX, mouseY, xMargin + buttonSize/2, yMargin + buttonSize + ySpacing + buttonSize/4) < buttonRadius) {
     // "Distances Bar Chart" button pressed
      DistancesBarChartActive = true;
-     StateScreenActive = false;
+     MapScreenActive = false;
     System.out.println("Distances Bar Chart button pressed");
   } else if (dist(mouseX, mouseY, xMargin + buttonSize + xSpacing + buttonSize/2, yMargin + buttonSize + ySpacing + buttonSize/4) < buttonRadius) {
     // "General ETA" button pressed
@@ -239,17 +150,17 @@ class StateScreen {
   } else if (dist(mouseX, mouseY, xMargin + buttonSize/2, yMargin + 2*buttonSize + 2*ySpacing + buttonSize/4) < buttonRadius) {
     // "Cancelled Pie Chart" button pressed
     CancelledAirlinePie = true;
-    StateScreenActive = false;
+    MapScreenActive = false;
     System.out.println("Cancelled Pie Chart button pressed");
   } else if (dist(mouseX, mouseY, xMargin + buttonSize + xSpacing + buttonSize/2, yMargin + 2*buttonSize + 2*ySpacing + buttonSize/4) < buttonRadius) {
     // "Airline Pie Chart" button pressed
     AirlinesPieChartAcitve =true;
-    StateScreenActive = false;
+    MapScreenActive = false;
     System.out.println("Airline Pie Chart button pressed");
   } else if (dist(mouseX, mouseY, width/2, height - 50) < buttonRadius) {
     // "Diverted" button pressed
     DivertedAirlinePie = true;
-    StateScreenActive = false;
+    MapScreenActive = false;
     System.out.println("Diverted Pie button pressed");
   }
  }

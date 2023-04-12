@@ -4,12 +4,14 @@ PieChart pieChart;
 CancelledPerAirlinePie pie;
 DivertedAirlinePie DivPie;
 StateScreen stateScreen;
+BusiestAirport busiest;
 boolean MapScreenActive = true;
 boolean DistancesBarChartActive = false;
 boolean AirlinesPieChartAcitve = false;
 boolean CancelledAirlinePie = false; 
 boolean DivertedAirlinePie = false; 
 boolean StateScreenActive = false;
+boolean BusiestAirportScreen = false;
 String selectedState = "";
 String stateName = "USA"; 
 
@@ -49,12 +51,16 @@ void draw() {
   if (DivertedAirlinePie){ 
     background(254, 251, 234);
     DivPie = new DivertedAirlinePie();
-    int[] angles = DivPie.chartAngles();
+    int[] angles = DivPie.DIVchartAngles();
     DivPie.drawChart(500, angles);
     DivPie.drawLegend();
   }
   if (StateScreenActive){
     stateScreen.draw();
+  }
+  if (BusiestAirportScreen){
+    busiest = new BusiestAirport();
+    busiest.readAirports();
   }
 }
 

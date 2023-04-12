@@ -26,7 +26,7 @@ class MapScreen {
     int yMargin = 100;
     int xSpacing = 1000;
     int ySpacing = (height - 2 * yMargin - 2 * buttonSize) / 3;
-    drawButton(xMargin, yMargin, "Origin/Destination", color(255, 0, 0));
+    drawButton(xMargin, yMargin, "Busiest Airport", color(255, 0, 0));
     drawButton(xMargin + buttonSize + xSpacing, yMargin, "Distance Leaderboard", color(0, 255, 0));
     drawButton(xMargin, yMargin + buttonSize + ySpacing, "Distances Bar Chart", color(255, 165, 0));
     drawButton(xMargin + buttonSize + xSpacing, yMargin + buttonSize + ySpacing, "General ETA", color(245, 230, 0));
@@ -229,8 +229,10 @@ class MapScreen {
    // Check if the mouse is within a certain radius of each button center
   int buttonRadius = buttonSize / 2 + 20; // increase the radius by 20 pixels
   if (dist(mouseX, mouseY, xMargin + buttonSize/2, yMargin + buttonSize/4) < buttonRadius) {
-    // "Origin/Destination" button pressed
-    System.out.println("Origin/Destination button pressed");
+    // "Busiest Airport" button pressed
+    BusiestAirportScreen = true;
+    MapScreenActive = false;
+    System.out.println("Busiest Airport button pressed");
   } else if (dist(mouseX, mouseY, xMargin + buttonSize + xSpacing + buttonSize/2, yMargin + buttonSize/4) < buttonRadius) {
     // "Distance Leaderboard" button pressed
     System.out.println("Distance Leaderboard button pressed");
